@@ -1,3 +1,3 @@
-# Metarocket
+# Metarocket 🚀
 
-WIP
+WIP - Soon 👀
