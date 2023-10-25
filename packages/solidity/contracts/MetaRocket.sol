@@ -12,6 +12,7 @@ contract MetaRocket is ERC721 {
         string name;
         string description;
         uint64 gasLeft;
+        uint64 gasCapacity;
         uint64 jumpCount;
         uint64 creationTimestamp;
         uint64 lastJumpTimestamp;
