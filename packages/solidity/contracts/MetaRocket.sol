@@ -8,6 +8,8 @@ contract MetaRocket is ERC721, AccessControl {
 
     bytes32 public constant CREATOR_ROLE = keccak256("CREATOR_ROLE");
 
+    uint256 private _currentTokenId = 0;
+
     enum RocketState { NOT_LAUNCHED, IN_FLIGHT, OUT_OF_GAS, EXPLODED, BLACK_HOLE }
 
     struct rocket {
@@ -29,9 +31,16 @@ contract MetaRocket is ERC721, AccessControl {
         _grantRole(CREATOR_ROLE, _msgSender());
     }
 
+    function createRocket(
+        address to
+    ) external onlyRole(CREATOR_ROLE) {
+        uint256 tokenId = _currentTokenId;
+        _safeMint(to, tokenId);
+        _currentTokenId++;
+    }
+
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 
 }
-
