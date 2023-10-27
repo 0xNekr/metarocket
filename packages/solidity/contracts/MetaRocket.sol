@@ -12,6 +12,8 @@ contract MetaRocket is ERC721, AccessControl {
 
     enum RocketState { NOT_LAUNCHED, IN_FLIGHT, OUT_OF_GAS, EXPLODED, BLACK_HOLE }
 
+    mapping(uint256 => rocket) public rockets;
+
     struct rocket {
         uint256 tokenId;
         string name;
@@ -32,11 +34,42 @@ contract MetaRocket is ERC721, AccessControl {
     }
 
     function createRocket(
-        address to
+        address to,
+        string calldata name,
+        string calldata description,
+        uint64 gasLeft,
+        uint64 gasCapacity,
+        bool gasFree,
+        bool indestructible
     ) external onlyRole(CREATOR_ROLE) {
         uint256 tokenId = _currentTokenId;
         _safeMint(to, tokenId);
+        _rocketInitialisation(tokenId, name, description, gasLeft, gasCapacity, gasFree, indestructible);
         _currentTokenId++;
+    }
+
+    function _rocketInitialisation(
+        uint256 _rocketId,
+        string calldata _name,
+        string calldata _description,
+        uint64 _gasLeft,
+        uint64 _gasCapacity,
+        bool _gasFree,
+        bool _indestructible
+    ) internal {
+        rockets[_rocketId] = rocket(
+            _rocketId,
+            _name,
+            _description,
+            _gasLeft,
+            _gasCapacity,
+            0,
+            uint64(block.timestamp),
+            uint64(block.timestamp),
+            RocketState.NOT_LAUNCHED,
+            _gasFree,
+            _indestructible
+        );
     }
 
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, AccessControl) returns (bool) {
