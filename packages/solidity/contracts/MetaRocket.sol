@@ -44,11 +44,11 @@ contract MetaRocket is ERC721, AccessControl {
     ) external onlyRole(CREATOR_ROLE) {
         uint256 tokenId = _currentTokenId;
         _safeMint(to, tokenId);
-        _rocketInitialisation(tokenId, name, description, gasLeft, gasCapacity, gasFree, indestructible);
+        _rocketInitialization(tokenId, name, description, gasLeft, gasCapacity, gasFree, indestructible);
         _currentTokenId++;
     }
 
-    function _rocketInitialisation(
+    function _rocketInitialization(
         uint256 _rocketId,
         string calldata _name,
         string calldata _description,
