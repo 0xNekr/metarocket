@@ -72,6 +72,25 @@ contract MetaRocket is ERC721, AccessControl {
         );
     }
 
+    function _update(
+        address to,
+        uint256 tokenId,
+        address auth
+    ) internal virtual override returns (address) {
+
+        if (auth != address(0)) {
+            rocket storage r = rockets[tokenId];
+            if (!r.gasFree) {
+                r.gasLeft--;
+            }
+
+            r.lastJumpTimestamp = uint64(block.timestamp);
+            r.jumpCount++;
+        }
+
+        return super._update(to, tokenId, auth);
+    }
+
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
